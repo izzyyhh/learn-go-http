@@ -17,7 +17,7 @@ const RANDOM_CHUCK_NORRIS_API_URL = "https://api.chucknorris.io/jokes/random"
 var client = &http.Client{}
 
 func main() {
-	body := getBodyFromGetRequest()
+	body, _ := getBodyFromGetRequest()
 
 	// from json to struct
 	var chuckNorrisResponse ChuckNorrisApiResponse
@@ -36,11 +36,12 @@ func main() {
 
 }
 
-func getBodyFromGetRequest() []byte {
+func getBodyFromGetRequest() ([]byte, error) {
 	resp, err := client.Get(RANDOM_CHUCK_NORRIS_API_URL)
 
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 
 	defer resp.Body.Close()
@@ -48,7 +49,8 @@ func getBodyFromGetRequest() []byte {
 
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 
-	return body
+	return body, nil
 }
